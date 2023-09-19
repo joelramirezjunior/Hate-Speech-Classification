@@ -1,5 +1,6 @@
 ---
 jupyter:
+  colab:
   kernelspec:
     display_name: Python 3
     language: python
@@ -15,16 +16,16 @@ jupyter:
     pygments_lexer: ipython3
     version: 3.8.5
   nbformat: 4
-  nbformat_minor: 4
+  nbformat_minor: 0
 ---
 
-::: {.cell .markdown}
+::: {.cell .markdown id="eRgJhlEStGpd"}
 # CS224U Final Project
 
 First necessary imports and datasets
 :::
 
-::: {.cell .code execution_count="1"}
+::: {.cell .code id="ZR2Ix2qctGpe"}
 ``` python
 from collections import Counter
 import numpy as np
@@ -45,7 +46,7 @@ import utils
 ```
 :::
 
-::: {.cell .code execution_count="2"}
+::: {.cell .code id="ykrucYqFtGpf"}
 ``` python
 HateSpeech_HOME = os.path.join('CS224U-Final-Project', 'Data')
 GLOVE_HOME = os.path.join('data', 'glove.6B')
@@ -54,7 +55,7 @@ glove_lookup = utils.glove2dict(
 ```
 :::
 
-::: {.cell .code execution_count="3"}
+::: {.cell .code id="2kTHzpTPtGpf"}
 ``` python
 def preprocess(text_string):
     """
@@ -78,7 +79,7 @@ def preprocess(text_string):
 ```
 :::
 
-::: {.cell .code execution_count="4"}
+::: {.cell .code id="IQoAfhkRtGpg"}
 ``` python
 def dataset_reader():
     """
@@ -106,35 +107,23 @@ def dataset_reader():
 ```
 :::
 
-::: {.cell .code execution_count="5"}
+::: {.cell .code id="hlwJbi2ZtGpg"}
 ``` python
 hateSpeechDev = dataset_reader()
 ```
 :::
 
-::: {.cell .code execution_count="6" scrolled="true"}
+::: {.cell .code id="KymS-HLLtGpg" scrolled="true"}
 ``` python
 hateSpeechDev.sample(3, random_state=1).to_dict(orient='records')
 ```
-
-::: {.output .execute_result execution_count="6"}
-    [{'example_id': 5222,
-      'sentence': '@Yg_Trece I agree. You never know she may have been begging to get dropped, makes her pussy wet guaranteed. She married him right after !',
-      'label': 'neutral'},
-     {'example_id': 7255,
-      'sentence': '@vewxyz this bitch........',
-      'label': 'neutral'},
-     {'example_id': 14810,
-      'sentence': 'RT @CuhCuhCuh: I got NO love for bitches or bitch niggas cuh',
-      'label': 'hate'}]
-:::
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="fn-0EmWVtGph"}
 Here are the label counts
 :::
 
-::: {.cell .code execution_count="7"}
+::: {.cell .code id="Xo690i1WtGph" outputId="7be72e27-dc6d-4327-ada4-e3c7757dcfb8"}
 ``` python
 hateSpeechDev.label.value_counts()
 ```
@@ -146,14 +135,14 @@ hateSpeechDev.label.value_counts()
 :::
 :::
 
-::: {.cell .code execution_count="8"}
+::: {.cell .code id="fe2ySHTmtGph"}
 ``` python
 train, test = train_test_split(hateSpeechDev, test_size=0.7)
 test_small, test_large = train_test_split(test, test_size = .9)
 ```
 :::
 
-::: {.cell .code execution_count="9"}
+::: {.cell .code id="qhOdQv3UtGph" outputId="af0d1988-da29-4c42-e28d-956b5dc8b1cf"}
 ``` python
 train.label.value_counts()
 ```
@@ -165,7 +154,7 @@ train.label.value_counts()
 :::
 :::
 
-::: {.cell .code execution_count="11"}
+::: {.cell .code id="O8Ga79hxtGph" outputId="9eaac070-e82a-4e82-a1e2-aaa902249470"}
 ``` python
 test.label.value_counts()
 ```
@@ -177,15 +166,15 @@ test.label.value_counts()
 :::
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="PiSXYG8XtGph"}
 Simple Baseline: Linear Softmax Classifier with Unigrams & Bigrams
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="v-XmZa6RtGpi"}
 ## Unigrams
 :::
 
-::: {.cell .code execution_count="12"}
+::: {.cell .code id="STHVJBzFtGpi"}
 ``` python
 def unigrams_phi(text):
     """
@@ -208,11 +197,11 @@ def unigrams_phi(text):
 ```
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="tXcyp7f6tGpi"}
 ## Bigrams
 :::
 
-::: {.cell .code execution_count="13"}
+::: {.cell .code id="urZeJKA_tGpi"}
 ``` python
 def bigrams_phi(text):
     """
@@ -234,23 +223,23 @@ def bigrams_phi(text):
     left = [utils.START_SYMBOL] + toks
     right = toks + [utils.END_SYMBOL]
     grams = list(zip(left, right))
-    return Counter(grams) 
+    return Counter(grams)
 ```
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="2irfwQArtGpi"}
 Joining both Uni and bi grams!
 :::
 
-::: {.cell .code execution_count="30"}
+::: {.cell .code id="IUDT_jqwtGpi"}
 ``` python
 def uni_and_bigrams_phi(text):
-    
+
     return unigrams_phi(text) + bigrams_phi(text)
 ```
 :::
 
-::: {.cell .code execution_count="31"}
+::: {.cell .code id="6seYStBVtGpi"}
 ``` python
 def fit_softmax_with_hyperparameter_search(X, y):
     """
@@ -298,32 +287,32 @@ def fit_softmax_with_hyperparameter_search(X, y):
 ```
 :::
 
-::: {.cell .code execution_count="32"}
+::: {.cell .code id="YXr3gelJtGpi"}
 ``` python
 # softmax_experiment_uni = sst.experiment(
-#     train,   
-#     unigrams_phi,                 
-#     fit_softmax_with_hyperparameter_search,      
+#     train,
+#     unigrams_phi,
+#     fit_softmax_with_hyperparameter_search,
 #     assess_dataframes=[test])
 ```
 :::
 
-::: {.cell .code execution_count="33"}
+::: {.cell .code id="8jvCtKQ9tGpj"}
 ``` python
 # softmax_experiment_bi = sst.experiment(
-#     train,   
-#     bigrams_phi,                 
-#     fit_softmax_with_hyperparameter_search,      
+#     train,
+#     bigrams_phi,
+#     fit_softmax_with_hyperparameter_search,
 #     assess_dataframes=[test])
 ```
 :::
 
-::: {.cell .code execution_count="34"}
+::: {.cell .code id="0zKbwRMjtGpj" outputId="ffecc1c3-ecfc-4c55-f51a-f8e6d5874622"}
 ``` python
 softmax_experiment_uni_bi = sst.experiment(
-    train,   
-    bigrams_phi,                 
-    fit_softmax_with_hyperparameter_search,      
+    train,
+    bigrams_phi,
+    fit_softmax_with_hyperparameter_search,
     assess_dataframes=[test])
 ```
 
@@ -341,15 +330,15 @@ softmax_experiment_uni_bi = sst.experiment(
 :::
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="-4oQYssXtGpj"}
 # RNN Optimization
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="9jQJ5qHitGpj"}
 ### RNN phi
 :::
 
-::: {.cell .code execution_count="20"}
+::: {.cell .code id="szJAmuzNtGpj"}
 ``` python
 def rnn_phi(text):
     text = preprocess(text)
@@ -357,11 +346,11 @@ def rnn_phi(text):
 ```
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="IWMMa6SFtGpj"}
 ### VSM Phi
 :::
 
-::: {.cell .code execution_count="38"}
+::: {.cell .code id="9XelWk6ntGpj"}
 ``` python
 def vsm_phi(text, lookup, np_func=np.mean):
     """Represent `tree` as a combination of the vector of its words.
@@ -399,7 +388,7 @@ def glove_phi(text, np_func=np.mean):
 ```
 :::
 
-::: {.cell .code execution_count="37"}
+::: {.cell .code id="TAJTrpKptGpj"}
 ``` python
 def fit_rnn_with_hyperparameter_search(X, y):
     sst_train_vocab = utils.get_vocab(X, mincount=2)
@@ -407,7 +396,7 @@ def fit_rnn_with_hyperparameter_search(X, y):
     basemod = TorchRNNClassifier(
         sst_glove_vocab,
         embedding=glove_embedding,
-        batch_size=25,  
+        batch_size=25,
         bidirectional=True,
         early_stopping=True)
 
@@ -425,7 +414,7 @@ def fit_rnn_with_hyperparameter_search(X, y):
 ```
 :::
 
-::: {.cell .code execution_count="38"}
+::: {.cell .code id="TnJ5ZTFAtGpj" outputId="f06c3af6-06a4-4577-8ec7-b4cc23b3a3a0"}
 ``` python
 rnn_experiment = sst.experiment(
     train,
@@ -453,13 +442,13 @@ rnn_experiment = sst.experiment(
 :::
 :::
 
-::: {.cell .code execution_count="100"}
+::: {.cell .code id="ERwOcos8tGpj"}
 ``` python
 rnn_experiment_hyperparams = rnn_experiment
 ```
 :::
 
-::: {.cell .code execution_count="39"}
+::: {.cell .code id="tSFC2coCtGpk"}
 ``` python
 # rnn_experiment = sst.experiment(
 #     train,
@@ -470,16 +459,16 @@ rnn_experiment_hyperparams = rnn_experiment
 ```
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="3HLBKZh1tGpk"}
 # Shallow Neural Network
 :::
 
-::: {.cell .code execution_count="40"}
+::: {.cell .code id="0HdSP5-5tGpk"}
 ``` python
 def fit_shallow_neural_classifier_with_hyperparameter_search(X, y):
     basemod = TorchShallowNeuralClassifier(
-        early_stopping=True 
-        ) 
+        early_stopping=True
+        )
     cv = 3
     param_grid = {
         'hidden_dim': [50,100,200],
@@ -490,13 +479,13 @@ def fit_shallow_neural_classifier_with_hyperparameter_search(X, y):
 ```
 :::
 
-::: {.cell .code execution_count="41"}
+::: {.cell .code id="I0SV4UW_tGpk" outputId="10527278-1875-459d-d055-eb469db2dabc"}
 ``` python
 torch_shallow_neural_experiment = sst.experiment(
-    train,   
-    bigrams_phi,                 
-    fit_shallow_neural_classifier_with_hyperparameter_search,      
-    assess_dataframes=[test]) 
+    train,
+    bigrams_phi,
+    fit_shallow_neural_classifier_with_hyperparameter_search,
+    assess_dataframes=[test])
 ```
 
 ::: {.output .stream .stderr}
@@ -517,7 +506,7 @@ torch_shallow_neural_experiment = sst.experiment(
 :::
 :::
 
-::: {.cell .code execution_count="42"}
+::: {.cell .code id="UM3Bqm_ptGpk" outputId="d6d7697d-a1bd-444a-a4ce-5a03bfd12b38"}
 ``` python
 softmax_linearRegression_glove_phi = sst.experiment(train,
                                                 glove_phi,
@@ -540,11 +529,11 @@ softmax_linearRegression_glove_phi = sst.experiment(train,
 :::
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="ieXc7OwKtGpk"}
 # Uni and Bigram NaiveBayes
 :::
 
-::: {.cell .code execution_count="47"}
+::: {.cell .code id="FoaPLrmTtGpk"}
 ``` python
 from sklearn.pipeline import Pipeline
 def fit_nb_classifier_with_hyperparameter_search(X, y):
@@ -570,7 +559,7 @@ def fit_nb_classifier_with_hyperparameter_search(X, y):
 ```
 :::
 
-::: {.cell .code execution_count="49"}
+::: {.cell .code id="beLuCDwdtGpk" outputId="53347d16-6929-4864-e161-e81470bf9b68"}
 ``` python
 unigram_nb_experiment_xval = sst.experiment(
     train,
@@ -593,11 +582,11 @@ unigram_nb_experiment_xval = sst.experiment(
 :::
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="qIG0bxGYtGpx"}
 # SVM Results
 :::
 
-::: {.cell .code execution_count="70"}
+::: {.cell .code id="Y0NqdfoftGpx"}
 ``` python
 from sklearn.svm import LinearSVC
 def fit_svm_classifier_with_hyperparameter_search(X, y):
@@ -617,12 +606,12 @@ def fit_svm_classifier_with_hyperparameter_search(X, y):
         X, y, pipeline,
         param_grid=param_grid,
         cv=5)
-    
+
     return bestmod
 ```
 :::
 
-::: {.cell .code execution_count="94"}
+::: {.cell .code id="sadCQkurtGpx" outputId="3cc70951-c60e-4ed9-b120-9123b58f2b81"}
 ``` python
 svm_experiment_xval = sst.experiment(
     train,
@@ -645,11 +634,11 @@ svm_experiment_xval = sst.experiment(
 :::
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="ysXuSOMLtGpy"}
 # Getting Optimal Models
 :::
 
-::: {.cell .code execution_count="129"}
+::: {.cell .code id="Mb9IEN7CtGpy"}
 ``` python
 softmax_experiment_optimal = softmax_experiment_uni_bi['model']
 rnn_experiment_optimal = rnn_experiment_hyperparams['model']
@@ -671,7 +660,7 @@ del svm_experiment_xval
 ```
 :::
 
-::: {.cell .code execution_count="18"}
+::: {.cell .code id="-G69bTnvtGpy" outputId="3d95419b-1b76-4920-d1f5-ffadfa86fd13"}
 ``` python
 def fit_optimized_softmax(X, y):
     basemod = LogisticRegression(
@@ -703,7 +692,7 @@ softmax_rerun = sst.experiment(
 :::
 :::
 
-::: {.cell .code execution_count="22" scrolled="true"}
+::: {.cell .code id="SflDZAUytGpy" outputId="1e2e363a-a4aa-48fc-e623-dae07eafb19c" scrolled="true"}
 ``` python
 def fit_rnn_optimized(X, y):
     sst_train_vocab = utils.get_vocab(X, mincount=2)
@@ -714,12 +703,12 @@ def fit_rnn_optimized(X, y):
         embed_dim = 100,
         eta = .01,
         hidden_dim = 75,
-        batch_size=25,  
+        batch_size=25,
         bidirectional=True,
         early_stopping=True)
     basemod.fit(X, y)
     return basemod
-    
+
 rnn_rerun = sst.experiment(
     train,
     rnn_phi,
@@ -745,14 +734,14 @@ rnn_rerun = sst.experiment(
 :::
 :::
 
-::: {.cell .code execution_count="77"}
+::: {.cell .code id="nWvKLRt1tGpy"}
 ``` python
 train_x, test_x = train_test_split(hateSpeechDev, test_size=0.85)
 test_y, test_large_y = train_test_split(test_x, test_size = .9)
 ```
 :::
 
-::: {.cell .code execution_count="95"}
+::: {.cell .code id="emOhjV3GtGpy" outputId="2a2fdff2-7105-4d18-92a7-c5fd30614277"}
 ``` python
 train_x.label.value_counts()
 ```
@@ -764,7 +753,7 @@ train_x.label.value_counts()
 :::
 :::
 
-::: {.cell .code execution_count="96"}
+::: {.cell .code id="V9THc2fqtGpy" outputId="c06586fd-67a3-4e6a-9e5d-a6ae1a96e74d"}
 ``` python
 test_y.label.value_counts()
 ```
@@ -776,22 +765,22 @@ test_y.label.value_counts()
 :::
 :::
 
-::: {.cell .code execution_count="36"}
+::: {.cell .code id="zF-bY98LtGpy" outputId="9a672bec-8ee9-45ea-c31e-ac1d96b95f1b"}
 ``` python
 def fit_shallow_optimized(X, y):
     basemod = TorchShallowNeuralClassifier(
         early_stopping=True,
         hidden_activation = nn.ReLU(),
         hidden_dim = 100
-        ) 
+        )
     basemod.fit(X, y)
     return basemod
 
 shallow_rerun = sst.experiment(
-    train_x,   
-    bigrams_phi,                 
-    fit_shallow_optimized,      
-    assess_dataframes=[test_y]) 
+    train_x,
+    bigrams_phi,
+    fit_shallow_optimized,
+    assess_dataframes=[test_y])
 ```
 
 ::: {.output .stream .stderr}
@@ -810,7 +799,7 @@ shallow_rerun = sst.experiment(
 :::
 :::
 
-::: {.cell .code execution_count="54"}
+::: {.cell .code id="tSi3Ucj4tGpy" outputId="af72d73e-0ff8-427f-d911-7e9b9219a17b"}
 ``` python
 def fit_softmax_glove_optimized(X, y):
     basemod = LogisticRegression(
@@ -822,7 +811,7 @@ def fit_softmax_glove_optimized(X, y):
         multi_class='auto')
     basemod.fit(X, y)
     return basemod
-    
+
 
 softmax_glove_phi_rerun = sst.experiment(train,
                                         glove_phi,
@@ -843,7 +832,7 @@ softmax_glove_phi_rerun = sst.experiment(train,
 :::
 :::
 
-::: {.cell .code execution_count="57"}
+::: {.cell .code id="eW3SIfDKtGpy" outputId="a2423dd1-b894-46ef-e24c-e9fe93e24577"}
 ``` python
 from sklearn.pipeline import Pipeline
 def fit_nb_optimized(X, y):
@@ -885,7 +874,7 @@ nb_rerun = sst.experiment(
 :::
 :::
 
-::: {.cell .code execution_count="80"}
+::: {.cell .code id="tx6vtICttGpy" outputId="e4ac19a6-8541-4678-f2fb-b53f8379fa0b"}
 ``` python
 from sklearn.svm import LinearSVC
 def fit_svm_classifier_with_hyperparameter_search(X, y):
@@ -895,7 +884,7 @@ def fit_svm_classifier_with_hyperparameter_search(X, y):
     pipeline = Pipeline(
         [('scaler', rescaler), ('model', mod)]
     )
-    
+
     param_grid = {
         'scaler': ['passthrough'],
         'model__C': [.10]}
@@ -927,11 +916,11 @@ svm_experiment_xval = sst.experiment(
 :::
 :::
 
-::: {.cell .markdown}
+::: {.cell .markdown id="5PvP4m-CtGpz"}
 ### Getting Assess Dataset
 :::
 
-::: {.cell .code execution_count="82"}
+::: {.cell .code id="ogq21AAVtGpz"}
 ``` python
 def find_errors(experiment):
     """Find mistaken predictions.
@@ -959,7 +948,7 @@ def find_errors(experiment):
 ```
 :::
 
-::: {.cell .code execution_count="103"}
+::: {.cell .code id="9Yjwd7cItGpz"}
 ``` python
 softmax_analysis = find_errors(softmax_rerun)
 rnn_analysis = find_errors(rnn_rerun)
@@ -969,7 +958,7 @@ svm_analysis = find_errors(svm_experiment_xval)
 ```
 :::
 
-::: {.cell .code execution_count="110"}
+::: {.cell .code id="a2lpXyU0tGpz"}
 ``` python
 analysis = rnn_analysis.merge(
     shallow_analysis, left_on='raw_examples', right_on='raw_examples')
@@ -987,12 +976,11 @@ error_group = analysis[
 ]
 for ex in error_group['raw_examples'].sample(20, random_state=1):
     print("="*70)
-    print(ex)
+    # print(ex)
 ```
-
 :::
 
-::: {.cell .code execution_count="114"}
+::: {.cell .code id="En2Sm44ctGpz"}
 ``` python
 # Examples where the rnn model is wrong, the SHALLOW is right,
 # and the gold label is 'hate'
@@ -1005,12 +993,11 @@ error_group = analysis[
 ]
 for ex in error_group['raw_examples'].sample(15, random_state=1):
     print("="*70)
-    print(ex)
+    # print(ex)
 ```
+:::
 
-
-
-::: {.cell .code execution_count="115"}
+::: {.cell .code id="dNOvvhEytGpz"}
 ``` python
 # Examples where the rnn model is correct, the SHALLOW is not,
 # and the gold label is 'hate'
@@ -1025,9 +1012,9 @@ for ex in error_group['raw_examples'].sample(10, random_state=69):
     print("="*70)
     print(ex)
 ```
+:::
 
-
-::: {.cell .code execution_count="137"}
+::: {.cell .code id="znKhflQvtGpz"}
 ``` python
 analysis = rnn_analysis.merge(
     softmax_analysis, left_on='raw_examples', right_on='raw_examples')
@@ -1047,13 +1034,9 @@ for ex in error_group['raw_examples'].sample(30, random_state=10):
     print("="*70)
     print(ex)
 ```
-
-::: {.output .stream .stdout}
-    ======================================================================
-:::
 :::
 
-::: {.cell .code execution_count="131"}
+::: {.cell .code id="oydvl8qQtGpz"}
 ``` python
 # Examples where the softmax model is incorrent, the SVM is right,
 # and the gold label is 'hate'
@@ -1068,8 +1051,9 @@ for ex in error_group['raw_examples'].sample(10, random_state=10):
     print("="*70)
     print(ex)
 ```
+:::
 
-::: {.cell .code execution_count="98"}
+::: {.cell .code id="vVz_1jnhtGpz"}
 ``` python
 analysis = nb_analysis.merge(
     softmax_analysis, left_on='raw_examples', right_on='raw_examples')
@@ -1090,22 +1074,9 @@ for ex in error_group['raw_examples'].sample(10, random_state=10):
     print("="*70)
     print(ex)
 ```
-
-::: {.output .error ename="NameError" evalue="name 'nb_analysis' is not defined"}
-    ---------------------------------------------------------------------------
-    NameError                                 Traceback (most recent call last)
-    <ipython-input-98-6dc5a2bd1e4c> in <module>
-    ----> 1 analysis = nb_analysis.merge(
-          2     svm_analysis, left_on='raw_examples', right_on='raw_examples')
-          3 
-          4 analysis = analysis.drop('gold_y', axis=1).rename(columns={'gold_x': 'gold'})
-          5 
-
-    NameError: name 'nb_analysis' is not defined
-:::
 :::
 
-::: {.cell .code execution_count="97"}
+::: {.cell .code id="mbw_IioLtGp0"}
 ``` python
 analysis = nb_analysis.merge(
     rnn_analysis, left_on='raw_examples', right_on='raw_examples')
@@ -1126,17 +1097,4 @@ for ex in error_group['raw_examples'].sample(10, random_state=10):
     print("="*70)
     print(ex)
 ```
-
-::: {.output .error ename="NameError" evalue="name 'nb_analysis' is not defined"}
-    ---------------------------------------------------------------------------
-    NameError                                 Traceback (most recent call last)
-    <ipython-input-97-c096e160451b> in <module>
-    ----> 1 analysis = nb_analysis.merge(
-          2     rnn_analysis, left_on='raw_examples', right_on='raw_examples')
-          3 
-          4 analysis = analysis.drop('gold_y', axis=1).rename(columns={'gold_x': 'gold'})
-          5 
-
-    NameError: name 'nb_analysis' is not defined
-:::
 :::
